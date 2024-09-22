@@ -1,7 +1,7 @@
 {
-  "name": "1parcial",
+  "name": "voirwebsite",
   "version": "1.0.0",
-  "description": "1 Parcial Clientes Web 2022",
+  "description": "Proyecto Final 2024",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

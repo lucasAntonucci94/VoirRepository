@@ -5,7 +5,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './public/index.html',
-            title: 'Parcial 2 CW'
+            title: 'Voir App Web'
         }),
         new VueLoaderPlugin(),
     ],

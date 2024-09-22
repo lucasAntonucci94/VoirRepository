@@ -96,7 +96,7 @@
         <router-view />
     </main>
     <footer class="footer">
-        <p>2 Parcial CW &copy; 2022 - Antonucci Lucas</p>
+        <p>Proyecto Final &copy; 2024 - Antonucci Lucas</p>
     </footer>
 </template>
 
