@@ -1,0 +1,19 @@
+Carrera: Diseño web y Programación
+Cuatrimestre: 4to
+Año: 2024
+Turno: Noche
+Comisión: dwn4av
+Docente: Santiago Gallino
+Caracter: Tesis
+Alumnos:[
+{
+	Apellido: Antonucci
+	Nombre: Lucas
+}
+]
+
+
+DATOS DE ACCESO ADMINISTRADOR
+
+usuario: admin@admin.com
+contraseña: Ab1234

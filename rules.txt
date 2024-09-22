@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+		//Se encarga de verificar que el usuario este autenticado
+    function isAuthenticated(){
+    	return request.auth != null;
+    }
+    //Se encarga de verificar que el usuario tenga rol ADMIN
+    function isAdmin(){
+      return isAuthenticated() &&
+      	get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    //Se encarga de verificar que el usuario exista en el sistema
+    function isKnownUser(){
+      return isAuthenticated() &&
+      	exist(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    //Match de lectura 
+    match /categories/{document=**} {
+    		//permite lectura a todos los usuarios autenticados
+      	allow read: if
+         isAuthenticated();
+    }      
+    //Match de publicaciones
+    match /posts/{document=**} {
+    //permite lectura y escritura a usuarios autenticados
+      allow read, write: if
+          isAuthenticated();
+    }  
+    //Match decomentarios    
+    match /comments/{document=**} {
+      allow read, write: if
+          isAuthenticated();
+    }      
+    //Match de chats privados
+    match /chats-private/{chat}  {
+    	allow read, write: if
+       isAuthenticated();
+       //no me funcionaba de la siguiente manera asi que de momento lo dejo para usuarios autenticados
+          //request.auth.token.email in resource.data.users;
+    	match /messages/{message}{
+      	allow read, write: if
+        //no me funcionaba de la siguiente manera asi que de momento lo dejo para usuarios autenticados
+         isAuthenticated();
+          //request.auth.token.email in get(/databases/$(database)/documents/chats-private/$(chat)).data.users;
+      }
+    }   
+    //Match de chats usuarios
+    match /users/{user} {
+    	// Permitimos escribir a cualquier usuario.
+    	allow write
+          //Permte leer a usuarios autenticados
+      allow read: if
+      	isAuthenticated();
+    	// Solo permitimos actualizar datos de usuarios si es el propio usuario.
+    	allow update: if
+      	(request.auth.token.email == resource.data.email) || (isAdmin() && isAuthenticated());
+    }
+    //Match chats global
+    match /chat-global/{document=**} {
+      allow read, write: if
+          isAuthenticated();
+    }  
+  	match /chat/{document=**} {
+      allow read, write: if
+          isAuthenticated();
+    }  
+    //Match Lugares de Interes   
+    match /locations/{location} {
+    	// Permitimos leer a cualquier usuario autenticado.
+    	allow read: if
+      	isAuthenticated();
+    	// Permite crear, actualizar o eliminar si el usuario es administrador.
+    	allow create, update, delete: if
+      	isAdmin();
+    }    
+  }
+}
